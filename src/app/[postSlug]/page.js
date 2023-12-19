@@ -7,9 +7,20 @@ import { loadBlogPost } from '@/helpers/file-helpers';
 import BlogHero from '@/components/BlogHero';
 
 
-async function BlogPost({params}) {
 
-  const postContent =  await loadBlogPost(params.postSlug);
+export async function generateMetadata({ params }) {
+  const postContent = await loadBlogPost(params.postSlug);
+
+  return {
+    title: postContent.frontmatter.title,
+    description: postContent.frontmatter.abstract
+  }
+}
+
+
+
+async function BlogPost({ params }) {
+  const postContent = await loadBlogPost(params.postSlug);
 
   return (
     <article className={styles.wrapper}>
@@ -18,10 +29,10 @@ async function BlogPost({params}) {
         publishedOn={new Date()}
       />
       <div className={styles.page}>
-        <MDXRemote source={postContent.content}/>
+        <MDXRemote source={postContent.content} />
       </div>
     </article>
   );
-} 
+}
 
 export default BlogPost;

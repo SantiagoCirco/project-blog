@@ -6,6 +6,13 @@ import styles from './homepage.module.css';
 
 import { getBlogPostList } from '@/helpers/file-helpers';
 
+import { BLOG_TITLE , BLOG_DESCRIPTION} from '@/constants';
+
+export const metadata = {
+  title: BLOG_TITLE,
+  description: BLOG_DESCRIPTION,
+}
+
 async function Home() {
 
   const blogPostList = await getBlogPostList();
