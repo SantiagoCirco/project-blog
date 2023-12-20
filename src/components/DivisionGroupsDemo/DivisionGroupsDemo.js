@@ -33,12 +33,12 @@ function DivisionGroupsDemo({
   const gridStructure =
     numOfGroups < 4
       ? {
-          gridTemplateColumns: `repeat(${numOfGroups}, 1fr)`,
-        }
+        gridTemplateColumns: `repeat(${numOfGroups}, 1fr)`,
+      }
       : {
-          gridTemplateColumns: '1fr 1fr',
-          gridTemplateRows: '1fr 1fr',
-        };
+        gridTemplateColumns: '1fr 1fr',
+        gridTemplateRows: '1fr 1fr',
+      };
 
   return (
     <Card as="section" className={styles.wrapper}>
@@ -70,9 +70,9 @@ function DivisionGroupsDemo({
                   <motion.div
                     layoutId={key}
                     transition={{
-                      type:'spring',
-                      damping:20,
-                      stiffness:100
+                      type: 'spring',
+                      damping: 20,
+                      stiffness: 100
                     }}
                     key={key}
                     className={styles.item}
@@ -91,8 +91,18 @@ function DivisionGroupsDemo({
           </p>
 
           {range(remainder).map((index) => {
+            const key = `${id}-${numOfItems - index - 1}`
             return (
-              <div key={index} className={styles.item} />
+              <motion.div 
+                layoutId={key} 
+                key={key} 
+                className={styles.item} 
+                transition={{
+                  type: 'spring',
+                  damping: 20,
+                  stiffness: 100
+                }}
+                />
             );
           })}
         </div>
