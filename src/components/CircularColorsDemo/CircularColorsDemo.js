@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import clsx from 'clsx';
 import {
@@ -5,6 +6,7 @@ import {
   Pause,
   RotateCcw,
 } from 'react-feather';
+import { motion } from 'framer-motion';
 
 import Card from '@/components/Card';
 import VisuallyHidden from '@/components/VisuallyHidden';
@@ -17,13 +19,25 @@ const COLORS = [
   { label: 'blue', value: 'hsl(235deg 100% 65%)' },
 ];
 
-function CircularColorsDemo() {
-  // TODO: This value should increase by 1 every second:
-  const timeElapsed = 0;
 
-  // TODO: This value should cycle through the colors in the
-  // COLORS array:
-  const selectedColor = COLORS[0];
+
+function CircularColorsDemo() {
+  const id = React.useId();
+  const [timeElapsed,setTimeElapsed] = React.useState(0);
+  const [playing,setPlaying] = React.useState(false);
+
+  React.useEffect(()=>{
+    const id = setInterval(()=>{
+      if(playing) setTimeElapsed((t) => t + 1)
+    },1000);
+    return ()=>{
+      clearInterval(id);
+    }
+  },[playing]);
+
+
+  
+  const selectedColor = COLORS[timeElapsed % COLORS.length];
 
   return (
     <Card as="section" className={styles.wrapper}>
@@ -38,7 +52,9 @@ function CircularColorsDemo() {
               key={index}
             >
               {isSelected && (
-                <div
+                <motion.div
+                  layoutId={id}
+                  style={{ zIndex: isSelected? 1: 2}}
                   className={
                     styles.selectedColorOutline
                   }
@@ -69,11 +85,14 @@ function CircularColorsDemo() {
           <dd>{timeElapsed}</dd>
         </dl>
         <div className={styles.actions}>
-          <button>
-            <Play />
-            <VisuallyHidden>Play</VisuallyHidden>
+          <button onClick={()=>setPlaying(!playing)}>
+             {playing? <Pause/> : <Play />}
+            <VisuallyHidden>{playing? 'Pause' : 'Play'}</VisuallyHidden>
           </button>
-          <button>
+          <button onClick={() => {
+            setPlaying(false);
+            setTimeElapsed(0);
+          }}>
             <RotateCcw />
             <VisuallyHidden>Reset</VisuallyHidden>
           </button>
